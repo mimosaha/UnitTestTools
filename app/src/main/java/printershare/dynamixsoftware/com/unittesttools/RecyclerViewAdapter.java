@@ -8,20 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 /**
  * Created by JUNED on 6/10/2016.
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    String[] SubjectValues;
+    List<String> subjects;
     Context context;
     View view1;
     ViewHolder viewHolder1;
-    TextView textView;
+    View.OnClickListener onClickListener;
 
-    public RecyclerViewAdapter(Context context1, String[] SubjectValues1) {
+    public RecyclerViewAdapter(Context context1, List<String> subjects, View.OnClickListener onClickListener) {
 
-        SubjectValues = SubjectValues1;
+        this.subjects = subjects;
+        this.onClickListener = onClickListener;
         context = context1;
     }
 
@@ -34,12 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(v);
 
             textView = v.findViewById(R.id.subject_textview);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "" + textView.getText(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            textView.setOnClickListener(onClickListener);
         }
     }
 
@@ -56,12 +54,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.textView.setText(SubjectValues[position]);
+        holder.textView.setText(subjects.get(position));
+        holder.textView.setTag(subjects.get(position));
     }
 
     @Override
     public int getItemCount() {
 
-        return SubjectValues.length;
+        return subjects.size();
     }
 }
